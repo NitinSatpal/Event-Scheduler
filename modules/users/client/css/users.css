@@ -1,0 +1,62 @@
+@media (min-width: 992px) {
+  .nav-users {
+    position: fixed;
+  }
+}
+.social-account-container {
+  display: inline-block;
+  position: relative;
+}
+.btn-add-remove-account {
+  pointer-events: none;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+.user-profile-picture {
+  max-height: 150px;
+  min-height: 150px;
+}
+.social-button {
+  -webkit-transition-duration: 0.4s;
+  -moz-transition-duration: 0.4s;
+  -o-transition-duration: 0.4s;
+  transition-duration: 0.4s;
+}
+.social-button:hover {
+  opacity: 0.65;
+}
+
+.authentication-form {
+  padding-bottom: 20px;
+  display:block;
+  background-color: #eee;
+  box-shadow: rgba(0, 0, 0, 0.5) 0 0 13px, rgba(0, 0, 0, 0.117647) 0 1px 4px !important;
+}
+
+.authentication-form form{
+  margin-top: 25px;
+}
+.authentication-form .btn{
+  background-color: #3c3c3c;
+  background-image: linear-gradient(to bottom, #3c3c3c 0%, #222 100%);
+  color:#fff;
+}
+.authentication-form-header {
+  padding:20px 0 20px 0 !important;
+  margin-left: -16.3px !important;
+  margin-right: -16.3px !important;
+  background-image: linear-gradient(to bottom, #3c3c3c 0%, #222 100%);
+}
+.authentication-form-header h3{
+  color: white;
+}
+.signup-form {
+  margin-top: 90px;
+}
+.signin-form{
+  margin-top: 130px !important;
+}
+.resetPasswordViews {
+  margin-top: 130px;
+}

@@ -1,0 +1,40 @@
+<header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse" id="hostSideHeader"></header>
+<section class="bg-image-2 host-dashboard" style="margin-top: 60px;" ng-show="vm.authentication.user.isStripeConnected">
+    <div class="page-header" style="padding-left: 15px">
+    	<div class="row">
+      		<div class="col-md-4">
+        		<h1>Meetings</h1>
+      		</div>
+      		<div class="col-md-4" style="margin-top: 2em">
+        		<input class="form-control col-md-4" type="text" ng-model="vm.search" placeholder="Search" ng-change="	vm.figureOutItemsToDisplay()" />
+      		</div>
+          <div class="col-md-4 pull-right" style="margin-top: 2em">
+            <a class="btn btn-primary pull-right" ui-sref="host.createMeeting">
+                <i class="glyphicon glyphicon-plus" style="color: #fff"></i>
+            </a>
+          </div>
+    	</div>
+ 	</div>
+  	<div class="list-group" ng-show="vm.pagedItems.length > 0" style="padding: 30px; width: 60%; cursor: pointer">
+    	<a ng-repeat="meeting in vm.pagedItems" ui-sref="host.meeting({meetingId: meeting._id})" class="list-group-item">
+      		<h4 class="list-group-item-heading" ng-bind="meeting.title"></h4>
+      		<p class="list-group-item-text" ng-bind="meeting.location"></p>
+      		<p class="list-group-item-text pull-right small" ng-bind="meeting.dateAndTime"></p>
+      		<p class="list-group-item-text" ng-bind="meeting.url"></p>
+    	</a>
+  	</div>
+  	<div class="row" ng-show="vm.pagedItems.length == 0">
+  		<div class="col-lg-12 col-md-12 col-sm-12 col-cs-12">
+  			<h4> You do not have any scheduled meetings. <a href="" ui-sref="host.createMeeting"> Click </a> here to schedule one. </h4>
+  		</div>  		
+  	</div>
+  	<div class="row">
+  		<div class="col-lg-12 col-md-12 col-sm-12 col-cs-12">
+  			<uib-pagination boundary-links="true" max-size="8" items-per-page="vm.itemsPerPage" total-items="vm.filterLength" ng-model="vm.currentPage" ng-change="vm.pageChanged()" ng-show="vm.pagedItems.length > 15"></uib-pagination>
+  		</div>
+  	</div>
+</section>
+<section ng-show="!vm.authentication.user.isStripeConnected" style="margin-top: 160px;" class="text-center">
+    <h4>To start using this platform and schedule your meetings, please connect with stripe</h4>
+    <a class="btn btn-primary" ng-click="vm.callOauthProvider('/api/auth/stripe')"> Connect with Stripe</a>
+</section>

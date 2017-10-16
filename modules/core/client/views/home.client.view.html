@@ -1,0 +1,40 @@
+<section class = "homepage" style="margin-top: 100px;">
+	<div class="row img-row">
+		<div class="col-lg-7 col-md-7 col-sm-7 col-xs-7">
+			<img src="modules/core/client/img/assets/home-wallpaper.jpg">
+		</div>
+		<div class="col-lg-5 col-md-5 col-sm-5 col-xs-5 content-row">
+			<h3> Schedule your meets at one finger tip </h3>
+			<span> What we provide : </span>
+			<ul>
+				<li>
+					<i class="fa fa-hand-o-right fa-lg" aria-hidden="true"></i>
+					<span> Easy meeting creation </span>
+				</li>
+				<li>
+					<i class="fa fa-hand-o-right fa-lg" aria-hidden="true"></i>
+					<span> Pre integrated payment method</span>
+				</li>
+				<li>
+					<i class="fa fa-hand-o-right fa-lg" aria-hidden="true"></i>
+					<span> Dashboard to monitor meeting </span>
+				</li>
+				<li>
+					<i class="fa fa-hand-o-right fa-lg" aria-hidden="true"></i>
+					<span> Unlimited meeting creations </span>
+				</li>
+				<li>
+					<i class="fa fa-hand-o-right fa-lg" aria-hidden="true"></i>
+					<span> Unlimited meeting participants booking </span>
+				</li>
+				<li>
+					<i class="fa fa-hand-o-right fa-lg" aria-hidden="true"></i>
+					<span> ... and much more </span>
+				</li>
+			</ul>
+			<br>
+			<h4 ng-show="!vm.authentication.user"> So what are you waiting for! <a ui-sref="authentication.signup" href=""> Sign up </a> and start scheduling yout meetings. </h4>
+			<h4 ng-show="vm.authentication.user"> <a ui-sref="host.dashboard" href=""> Go to dashboard </a> </h4>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,168 @@
+<section data-spy="scroll" data-target="#site-nav" class="meetup-registration-form" id="meeting-registration">
+	<nav id="site-nav" class="navbar navbar-fixed-top navbar-custom">
+        <div class="container">
+            <div class="navbar-header">
+
+                <!-- logo -->
+                <div class="site-branding">
+                    <a class="logo">
+                        {{vm.meeting.title}}
+                    </a>
+                </div>
+
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar-items" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+
+            </div><!-- /.navbar-header -->
+
+            <div class="collapse navbar-collapse" id="navbar-items">
+                <ul class="nav navbar-nav navbar-right">
+                    <!-- navigation menu -->
+                    <li>
+                        <a data-scroll href="#about">About Meeting</a>
+                    </li>                
+                </ul>
+            </div>
+        </div><!-- /.container -->
+    </nav>
+    <header id="site-header" class="site-header valign-center"> 
+        <div class="intro">
+            <h1><span id="meetingTitle">{{vm.meeting.title}}</span></h1>
+            <h2 id="beforePayment">Location and time will apear here after registration</h2>   
+            <h2 id="afterPaymentTime" style="display: none;">{{vm.meeting.dateAndTime}}</h2>
+            <h2 id="afterPaymentLocation" style="display: none;">{{vm.meeting.location}}</h2>          
+            <a class="btn btn-white" data-scroll id="registerButton">Register Now</a>
+        
+        </div>
+    </header>
+    <section id="about" class="section about">
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <h3 class="section-title text-center">About Meeting</h3>
+                    <p>{{vm.meeting.description}}</p>
+                    <figure>
+                        <img alt="" class="img-responsive" src="assets/images/about-us.jpg">
+                    </figure>
+
+                </div><!-- /.col-sm-6 -->
+            </div><!-- /.row -->
+        </div><!-- /.container -->
+    </section>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <p class="site-info">Powered by <a href="/">{company name here}</a></p>
+                    <!-- <ul class="social-block">
+                        <li><a href=""><i class="ion-social-twitter"></i></a></li>
+                        <li><a href=""><i class="ion-social-facebook"></i></a></li>
+                        <li><a href=""><i class="ion-social-linkedin-outline"></i></a></li>
+                        <li><a href=""><i class="ion-social-googleplus"></i></a></li>
+                    </ul> -->
+                </div>
+            </div>
+        </div>
+    </footer>
+</section>
+<a id="show-meeting-details-trigger" data-toggle="modal" data-target="#show-meeting-details" style="display: none;"></a>
+<div id="show-meeting-details" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Meeting Time and Location</h4>
+            </div>
+            <div class="modal-body">
+                <p> Please make not of the time and location of the meeting. Once you leave the page, it cannot be found again.</p>
+                <h4> Location: {{vm.meeting.location}}</h4>
+                <h4> Date and Time: {{vm.meeting.dateAndTime}}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+<a id="show-error-trigger" data-toggle="modal" data-target="#show-error-details" style="display: none;"></a>
+<div id="show-error-details" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Oops! Something is gone wrong.</h4>
+            </div>
+            <div class="modal-body">
+                <p id="showErrorHere"></p>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+$(window).scroll(function(){
+	handleTopNavAnimation();
+});
+
+$(window).on("load", function(){
+	handleTopNavAnimation();
+});
+
+function handleTopNavAnimation() {
+	var top=$(window).scrollTop();
+
+	if(top>10){
+		$('#site-nav').addClass('navbar-solid'); 
+	}
+	else{
+		$('#site-nav').removeClass('navbar-solid'); 
+	}
+}
+smoothScroll.init();
+</script>
+<script>
+var handler = StripeCheckout.configure({
+  key: 'pk_test_hmfCDu1S8M1NL2CJlPrXh9M4',
+  image: 'https://stripe.com/img/documentation/checkout/marketplace.png',
+  locale: 'auto',
+  token: function(token) {
+    var amount = 100 * angular.element('#meeting-registration').scope().amount;
+    var account = angular.element('#meeting-registration').scope().userStripeId;
+    var meetingId = angular.element('#meeting-registration').scope().meetingId;
+    // You can access the token ID with `token.id`.
+    // Get the token ID to your server-side code for use.
+    var requestBody = {stripeToken: token.id, amount: amount, account: account, meetingId: meetingId}
+    $.ajax({
+        type: 'POST',
+        url: '/api/buyer/meetup/register',
+        data: requestBody,
+        success: function(response) {
+            $('#afterPaymentTime').css("display", "block");
+            $('#afterPaymentLocation').css("display", "block");
+            $('#beforePayment').css("display", "none");
+            $('#show-meeting-details-trigger').click();
+        },
+        error: function (error) {
+            $('#showErrorHere').text(err);
+            $('#show-error-trigger').click();
+        }
+    });
+  }
+});
+
+document.getElementById('registerButton').addEventListener('click', function(e) {
+  // Open Checkout with further options:
+  var amount = 100 * angular.element('#meeting-registration').scope().amount;
+  handler.open({
+    name: $('#meetingTitle').val(),
+    description: 'Meeting Amount',
+    amount: amount
+  });
+  e.preventDefault();
+});
+
+// Close Checkout on page navigation:
+window.addEventListener('popstate', function() {
+  handler.close();
+});
+</script>

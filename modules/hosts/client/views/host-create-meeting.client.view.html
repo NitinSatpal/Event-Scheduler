@@ -1,0 +1,107 @@
+<header ng-include="'/modules/core/client/views/header.client.view.html'" class="navbar navbar-fixed-top navbar-inverse" id="hostSideHeader"></header>
+<section class="bg-image-2 host-meeting" id="host-meeting">
+	<div class="col-md-4 pull-right" style="margin-top: 80px; position: fixed; right: 0">
+	    <a class="btn btn-primary pull-right" ui-sref="host.dashboard">
+	        <i class="glyphicon glyphicon-arrow-left" style="color: #fff"></i>
+	    </a>
+	</div>
+    <div class="row" style="width: 50%; margin-left: 25%">
+    	<div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" style=" margin-top: 88px;">
+        	<form class="form-horizontal" name="vm.meetingForm" ng-submit="vm.createMeeting(vm.meetingForm.$valid)" novalidate>        		
+        		<div class="panel">
+        			<h3 class="text-center"> Create Meeting </h3>
+        			<uib-alert type="danger" ng-show="vm.error" class="text-center text-danger">
+		            	<span ng-bind="vm.error"></span>
+		          	</uib-alert>
+					<div class="input_group form-group" show-errors>
+						<label for="meeting_title" class="control-label">Name your meeting</label>
+						<div class="input-group" >
+							<span class="input-group-addon"><i class="zmdi zmdi-landscape"></i></span>
+							<input type="text" class="form-control" name="meeting_title" id="meeting_title"  ng-model="vm.meeting.title" placeholder="Ex: Board meeting" required/>
+						</div>
+						<div ng-messages="vm.meetingForm.meeting_title.$error" role="alert">
+		                    <p class="help-block error-text" ng-message="required">Meeting title is required</p>
+		                </div>
+					</div>
+					<div class="input_group form-group">
+						<label for="meeting_description" class="control-label">Description</label>
+						<div class="input-group">
+							<textarea type="text" class="form-control" name="meeting_description" id="meeting_description"  ng-model="vm.meeting.description" placeholder="What is this meeting about" cols="80" rows="5"/>
+						</div>						
+					</div>
+					<div class="input_group form-group" show-errors id="dateAndtimeContentArea">
+						<label for="meeting_Date_Time" class="control-label">Date and Time</label>
+						<div class="input-group date" id='datetimepicker1'>
+							<span class="input-group-addon">
+	                        	<span class="glyphicon glyphicon-calendar"></span>
+	                    	</span>
+	                    	<input type='text' class="form-control" ng-model="vm.dateAndtime" placeholder="Date and Time" id="meeting_Date_Time" name="meeting_Date_Time" ng-change="vm.removeErrorIfAny()"/>
+	                    </div>
+	                    <div role="alert" id="dateAndtimeMessage">
+		                    <p class="help-block error-text">Meeting date and time is required</p>
+		                </div>
+	                </div>
+
+					<div class="input_group form-group" show-errors>
+						<label for="meeting_Location" class="control-label">Location</label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="zmdi zmdi-pin"></i></span>
+							<input type="text" class="form-control" name="meeting_Location" id="meeting_Location" ng-model="vm.location" placeholder="Ex: marriot hotel" required/>
+						</div>
+						<div ng-messages="vm.meetingForm.meeting_Location.$error" role="alert">
+		                    <p class="help-block error-text" ng-message="required">Meeting location is required</p>
+		                </div>
+					</div>
+
+					<div class="input_group form-group" show-errors>
+						<label for="meeting_Location" class="control-label">Amount</label>
+						<div class="input-group">
+							<span class="input-group-addon"><i class="zmdi zmdi-pin"></i></span>
+							<input type="text" class="form-control" name="meeting_Amount" id="meeting_Amount" ng-model="vm.meeting.amount" placeholder="Ex: 2000 USD" required numbers-only/>
+						</div>
+						<div ng-messages="vm.meetingForm.meeting_Amount.$error" role="alert">
+		                    <p class="help-block error-text" ng-message="required">Meeting amount is required</p>
+		                </div>
+					</div>
+					<div class="row text-center">
+						<button class="btn btn-primary" type="submit">Schedule Meeting</button>
+					</div>
+        		</div>
+        	</form>
+        </div>
+    </div>
+</section>
+<a id="show-meeting-sharable-link-trigger" data-toggle="modal" data-target="#show-meeting-sharable-link" style="display: none;"></a>
+<div id="show-meeting-sharable-link" class="modal fade" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>
+                <h4 class="modal-title">Meeting Sharable Link</h4>
+            </div>
+            <div class="modal-body">
+                <p> Share this link with all the users whom you want to invite to your meeting.</p>
+                <h4> <span id="sharableMeetingLink"> </span></h4>
+                
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function () {
+        $('#datetimepicker1').datetimepicker();
+    });
+
+    $("#datetimepicker1").on("dp.change", function (e) {
+	    $('#dateAndtimeContentArea').removeClass('has-error');
+	});
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC8QX0vYZ8GdosLz3mHlHHuwyOYVqz5TxI&libraries=places&callback=initAutocomplete"></script>
+
+<script>
+function initAutocomplete() {
+		var location = document.getElementById('meeting_Location');
+    	var searchBox = new google.maps.places.SearchBox(location);
+	}
+</script>
