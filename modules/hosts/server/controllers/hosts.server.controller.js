@@ -9,7 +9,7 @@ var path = require('path'),
   User = mongoose.model('User'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
-var stripe = require("stripe")("sk_test_dqaDTltNEWQMu2KEh9UHUxVL");
+var stripe = require("stripe")("stripe api key here");
 exports.paymentFromUser = function (req, res) {
 	var token = req.body.stripeToken;
 	var totalAmount = parseInt(req.body.amount);
